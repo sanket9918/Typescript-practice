@@ -1,14 +1,22 @@
-function combine(n1, n2) {
-    var res;
-    if (typeof n1 === 'number' && typeof n2 === 'number') {
-        res = n1 + n2;
+"use strict";
+// type Person = {
+//     name: string
+//     age: number
+// type AddFn = (a: number, b: number) => number; // Type version of the same interface 
+var add1;
+add1 = function (n1, n2) {
+    return n1 + n2;
+};
+var Person = /** @class */ (function () {
+    function Person(val, n) {
+        this.val = val;
+        this.name = n;
     }
-    else {
-        res = n1.toString() + n2.toString();
-    }
-    return res;
-}
-var combinedAges = combine(1, 2);
-console.log(combinedAges);
-var combineString = combine("Hello", "World");
-console.log(combineString);
+    Person.prototype.greet = function (phrase) {
+        console.log(phrase + ' ' + this.name);
+    };
+    return Person;
+}());
+var user1;
+user1 = new Person('sanket', 'hello'); //Though user1 is defined through the interface , the Person class implements it 
+user1.greet('something');
