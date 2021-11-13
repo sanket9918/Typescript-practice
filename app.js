@@ -1,93 +1,62 @@
 "use strict";
-var _a;
-var el = {
-    name: "Sanket",
-    priviledges: ["1"],
-    startDate: new Date()
-};
-function addAnother(a, b) {
-    if (typeof a === "string" || typeof b === "string") { // Typeguards using typeof
-        return a.toString() + b.toString();
-    }
-    return a + b;
+// const names: Array<string> = []
+// // names[0].split(' ')
+// const promise: Promise<string> = new Promise((resolve, reject) => { //This Promise<> kind of declaration is called as Generics
+//     setTimeout(() => {
+//         resolve('This is done')
+//     }, 2000)
+// })
+// promise.then(data => {
+//     data.split('')
+// })
+//--------------------------------------------------------------------------
+//Own Generic 
+// function merge<T, U>(objA: T, objB: U) {
+//     return Object.assign(objA, objB)
+// }
+function merge(objA, objB) {
+    return Object.assign(objA, objB);
 }
-var stringRes = addAnother("sanket", "mohapartra"); //comes from the loverloaded string function
-console.log(stringRes);
-function printEmp(emp) {
-    console.log('Name' + emp.name);
-    if ('priviledges' in emp) {
-        console.log("Priviledges" + emp.priviledges); //not in Employee so not jutsworks by itself
+const mergedObj = merge({ name: 'key', hobbies: ['hockey'] }, { key: 1 });
+// const mergedObj1 = merge({ name: 'key', hobbies: ['hockey'] }, 1) //silently ignore the 2nd object -> which is just a number not an obj
+const mergedObj2 = merge({ name: 'key', }, { key: 1 }); //But this is redundant 
+console.log(mergedObj2);
+function countAndDesc(element) {
+    let desc = 'Got no elements';
+    if (element.length > 0) {
+        desc = 'Got ' + element.length + ' elements';
     }
-    if ('startDate' in emp) { //check with in using js in
-        console.log("Start date" + emp.startDate); //not in Employee so not jutsworks by itself
-    }
+    return [element, desc];
 }
-printEmp(el);
-//--------------------------------------------------------------------------------------
-//If 2 classes are there -happens during run time
-// Case 2
-var Car = /** @class */ (function () {
-    function Car() {
-    }
-    Car.prototype.drive = function () {
-        console.log("Driving..");
-    };
-    return Car;
-}());
-var Truck = /** @class */ (function () {
-    function Truck() {
-    }
-    Truck.prototype.parking = function () {
-        console.log("Parking");
-    };
-    return Truck;
-}());
-var v1 = new Car();
-var v2 = new Truck();
-function useVehicle(vehicle) {
-    if (vehicle instanceof Car)
-        vehicle.drive();
-    if (vehicle instanceof Truck) {
-        vehicle.parking();
-    }
+console.log(countAndDesc("Hello"));
+console.log(countAndDesc(["Hello", "there"])); //Automatically adjusts the signature
+//----------------------------------------------------------------------------------------------------------
+//Constraints
+function extractAndConvert(obj, key) {
+    return 'value: ' + obj[key];
 }
-useVehicle(v1);
-useVehicle(v2);
-function moveAnimal(animal) {
-    switch (animal.type) {
-        case 'bird':
-            console.log('Moving with speed ' + animal.flysingspeed);
-            break;
-        case 'horse':
-            console.log('Moving with speed ' + animal.runningSpeed);
-            break;
+extractAndConvert({ name: 'Sanket' }, 'name');
+//------------------------------------------------------------------------------------------------------
+//Generic Class
+class StorageFunc {
+    constructor() {
+        this.data = [];
+    }
+    addItem(item) {
+        this.data.push(item);
+    }
+    removeItem(item) {
+        if (this.data.indexOf(item) === -1)
+            return;
+        this.data.splice(this.data.indexOf(item), 1);
+    }
+    getItem() {
+        return [...this.data];
     }
 }
-moveAnimal({ type: "horse", runningSpeed: 200 });
-moveAnimal({ type: "bird", flysingspeed: 200 });
-//--------------------------------------------------------------------------------------------------------------------
-//type casting
-// const paragraph = document.querySelector('p')
-// const para = <HTMLInputElement>document.getElementById('myId')! one way
-var para = document.getElementById('myId'); //2nd way
-if (para) {
-    para.value = "hi there";
-}
-var errorBag = {
-    email: "Not a valid email",
-    userName1: "Must start with Capital letter"
-};
-//------------------------------------------------------------------------------------
-// Optional chaining
-var userData = {
-    id: 'ef',
-    name: 'ebjf',
-    jo: { title: 'fvf' }
-};
-console.log((_a = userData === null || userData === void 0 ? void 0 : userData.jo) === null || _a === void 0 ? void 0 : _a.title); //will be checking for if the data is available
-//------------------------------------------------------------------------------------
-//nulling coalescing
-var userData1 = undefined;
-// const storedData = userData1 || 'DEFAULT'
-var storedData = userData1 !== null && userData1 !== void 0 ? userData1 : 'DEFAULT';
-console.log(storedData);
+const textStorage = new StorageFunc();
+textStorage.addItem("Hello");
+textStorage.addItem("Sanket");
+textStorage.addItem(10);
+textStorage.removeItem('Sanket');
+console.log(textStorage.getItem());
