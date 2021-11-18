@@ -1,0 +1,1 @@
+declare var GLOBAL: any //use this as last resort ->forced knowing the variables 
